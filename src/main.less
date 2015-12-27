@@ -1,0 +1,239 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: #FFF;
+    font-family: 'Heiti SC', 'Microsoft YaHei', '微软雅黑', sans-serif;
+}
+
+#logo-wrap {
+    width: 128 / 64rem;
+    height: 128 / 64rem;
+    overflow: hidden;
+    position: absolute;
+    z-index: 999;
+
+    .bg {
+        width: 100%;
+        height: 100%;
+        background-color: #eb2f35;
+        position: absolute;
+        -webkit-transform: translateY(100%);
+        transform: translateY(100%);
+    }
+
+    img {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+}
+
+#cover-wrap {
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 1;
+    background-color: #b01417;
+
+    .paper {
+        opacity: 0;
+        width: 100%;
+        height: 1136 / 64rem;
+        position: absolute;
+        overflow: hidden;
+        left: 0;
+        top: 0;
+        z-index: 9;
+        background-color: #f7e687;
+        -webkit-transform: translateY(-50%);
+        transform: translateY(-50%);
+        box-shadow: 1px 1px 1px rgba(0,0,0,0.7);
+
+        .title {
+            width: 595 / 64rem;
+            height: 79 / 64rem;
+            margin: 64 / 64rem auto 0;
+
+            img {
+                width: 100%;
+                height: 100%;
+                margin-left: 16 / 64rem;
+            }
+        }
+    }
+
+    .imgs {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+        z-index: 10;
+
+        img {
+            width: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 99;
+        }
+
+        .heart, .heart-out {
+            opacity: 0;
+        }
+    }
+
+    .wedding {
+        width: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 0;
+        display: none;
+        -webkit-transform: translateY(30%);
+        transform: translateY(30%);
+        z-index: 99;
+    }
+
+    .invitation {
+        width: 100%;
+        position: absolute;
+        box-sizing: border-box;
+        padding: 20 / 64rem;
+        display: none;
+        z-index: 99;
+        opacity: 0;
+
+        & > * {
+            color: #4c4c4c;
+            text-align: center;
+            padding: 20 / 64rem;
+            line-height: 1.5em;
+        }
+
+        .time, .name {
+            font-size: 40 / 64rem;
+        }
+
+        .text {
+            font-size: 32 / 64rem;
+        }
+
+        .form {
+            font-size: 30 / 64rem;
+
+            label {
+                font-weight: bolder;
+            }
+        }
+    }
+}
+
+#indicator-wrap {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 999;
+
+    .text {
+        opacity: 0;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        text-align: center;
+        width: 100%;
+        padding: 60 / 64rem 0;
+        font-size: 30 / 64rem;
+        color: #FFFFFF;
+        background: url(assets/images/arrow.png) no-repeat center 100 / 64rem;
+        background-size: 85 / 64rem 34 / 64rem;
+        -webkit-animation: indicator-beat 1s linear 0s infinite alternate;
+        animation: indicator-beat 1s linear 0s infinite alternate;
+    }
+}
+
+@-webkit-keyframes indicator-beat {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes indicator-beat {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+#slide-wrap {
+    display: none;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 99;
+    overflow: hidden;
+
+    section {
+        display: none;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+        overflow: hidden;
+    }
+
+    header {
+        margin: 20 / 64rem 40 / 64rem;
+
+        h2, h3 {
+            margin: 0;
+            padding: 20 / 64rem;
+            color: #eb2f35;
+            text-align: left;
+
+            span {
+                display: inline-block;
+                opacity: 0;
+                -webkit-transform: scale(1.2);
+                transform: scale(1.2);
+            }
+        }
+
+        h2 {
+            font-size: 30 / 64rem;
+        }
+
+        h3 {
+            font-size: 36 / 64rem;
+        }
+    }
+
+    img {
+        opacity: 0;
+        width: 100%;
+    }
+}

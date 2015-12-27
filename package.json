@@ -1,0 +1,37 @@
+{
+  "name": "wedding-invitation",
+  "version": "0.1.0",
+  "description": "The website of then wedding invitation",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/terrykingcha/wedding-invitation.git"
+  },
+  "keywords": [
+    "PAFC"
+  ],
+  "author": "Terry King <terrykingcha@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "babel": "^5.8.23",
+    "babel-loader": "^5.3.2",
+    "babel-runtime": "^5.8.25",
+    "css-loader": "^0.16.0",
+    "file-loader": "^0.8.4",
+    "img-loader": "^1.2.0",
+    "less": "^2.5.1",
+    "less-loader": "^2.2.0",
+    "preload.io": "~1.4.3",
+    "preload.io-image": "~1.1.2",
+    "promise": "^7.0.4",
+    "raw-loader": "^0.5.1",
+    "regenerator": "^0.8.42",
+    "style-loader": "^0.12.3",
+    "url-loader": "^0.5.6",
+    "webpack": "^1.12.0",
+    "zepto": "0.0.4"
+  }
+}
