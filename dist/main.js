@@ -65,6 +65,7 @@
 	var _promise$utilities = _lib.promise.utilities;
 	var domReady = _promise$utilities.domReady;
 	var delay = _promise$utilities.delay;
+	var waitForEvent = _promise$utilities.waitForEvent;
 	
 	doc.addEventListener('touchmove', function (e) {
 	    return e.preventDefault();
@@ -87,44 +88,36 @@
 	});
 	
 	var MUSIC_PATH = 'assets/musics';
-	var musicPromise = new Promise(function (resolve, reject) {
-	    var music = new Audio(MUSIC_PATH + '/bg.mp3');
-	    music.addEventListener('loadstart', function () {
-	        return console.log('music loadstart');
-	    });
-	    music.addEventListener('loadeddata', function () {
-	        return console.log('music loadeddata');
-	    });
-	    music.addEventListener('loadedmetadata', function () {
-	        return console.log('music loadedmetadata');
-	    });
+	/*
+	const musicPromise = new Promise(function(resolve, reject) {
+	    var music = new Audio(`${MUSIC_PATH}/bg.mp3`);
+	    music.addEventListener('loadstart', (...args) => console.log('music loadstart'))
+	    music.addEventListener('loadeddata', (...args) => console.log('music loadeddata'))
+	    music.addEventListener('loadedmetadata', (...args) => console.log('music loadedmetadata'));
 	    var progressCount = 0;
-	    music.addEventListener('progress', function () {
+	    music.addEventListener('progress', (...args) => {
 	        console.log('music progress');
 	        progressCount++;
 	        if (progressCount > 20) {
 	            resolve();
 	        }
 	    });
-	    music.addEventListener('loadend', function () {
-	        return console.log('music loadend');
-	    });
-	    music.addEventListener('load', function () {
-	        return console.log('music load');
-	    });
+	    music.addEventListener('loadend', (...args) => console.log('music loadend'))
+	    music.addEventListener('load', (...args) => console.log('music load'))
 	    music.loop = true;
 	    music.autobuffer = true;
 	    music.autoplay = true;
 	    music.preload = 'auto';
 	    music.play();
 	});
+	*/
 	
 	Promise.all(imageloaderPromises).then(preloaderDeferred.resolve);
 	
 	var LOGO_HTML = '\n    <div id="logo-wrap">\n        <div class="bg"></div>\n        <img src="' + IMAGE_PATH + '/logo.png" />\n    </div>\n';
 	var $logo;
 	
-	var COVER_HTML = '\n    <div id="cover-wrap">\n        <div class="paper">\n            <div class="title">\n                <img src="//:0" data-src="' + IMAGE_PATH + '/title.png" />\n            </div>\n        </div>\n        <div class="imgs">\n            <img class="heart" src="//:0" data-src="' + IMAGE_PATH + '/heart.png" />\n            <img class="cover" src="//:0" data-src="' + IMAGE_PATH + '/cover.png" />\n            <img class="heart-out" src="//:0" data-src="' + IMAGE_PATH + '/heart-out.png" />\n        </div>\n        <img class="wedding" src="//:0" data-src="' + IMAGE_PATH + '/wedding.png" />\n        <div class="invitation">\n            <div class="time">2016年1月27日</div>\n            <div class="name">金擘 先生、黄玉梅 女士</div>\n            <div class="text">诚邀亲爱的您参加我们的婚礼</div>\n            <div class="form"><label>地点：</label><span>浙江省绍兴市越城区偏门直街179号<span></div>\n            <div class="form"><label>酒店：</label><span>香港品珍楼精品食府<span></div>\n            <div class="form"><label>时间：</label><span>下午六点整（五点开始签到）<span></div>\n        </div>\n    </div>\n';
+	var COVER_HTML = '\n    <div id="cover-wrap">\n        <div class="paper">\n            <div class="title">\n                <img src="//:0" data-src="' + IMAGE_PATH + '/title.png" />\n            </div>\n        </div>\n        <div class="imgs">\n            <img class="heart" src="//:0" data-src="' + IMAGE_PATH + '/heart.png" />\n            <img class="cover" src="//:0" data-src="' + IMAGE_PATH + '/cover.png" />\n            <img class="heart-out" src="//:0" data-src="' + IMAGE_PATH + '/heart-out.png" />\n        </div>\n        <img class="wedding" src="//:0" data-src="' + IMAGE_PATH + '/wedding.png" />\n        <div class="invitation">\n            <div class="time">2016年1月27日</div>\n            <div class="name">金擘 先生、黄玉梅 女士</div>\n            <div class="text">诚邀亲爱的您参加我们的婚礼</div>\n            <div class="form"><label>地点：</label><span>浙江省绍兴市越城区偏门直街179号<span></div>\n            <div class="form"><label>酒店：</label><span>香港品珍楼精品食府<span></div>\n            <div class="form"><label>时间：</label><span>下午六点整（五点开始签到）<span></div>\n        </div>\n        <div class="buttons">\n            <a id="invited">应邀赴宴</a>\n            <a id="bless">送上祝福</a>\n        </div>\n    </div>\n';
 	var $cover;
 	
 	var INDICATOR_HTML = '\n    <div id="indicator-wrap">\n        <a class="text">请君亲启</a>\n    </div>\n';
@@ -132,6 +125,9 @@
 	
 	var SLIDES_HTML = '\n    <div id="slide-wrap">\n        <section>\n            <header>\n                <h2>2011年12月18日</h2>\n                <h3>我们在车展上不期而遇</h3>\n            </header>\n            <img src="//:0" data-src="' + IMAGE_PATH + '/slides/1.jpg" />\n        </section>\n        <section>\n            <header>\n                <h2>2012年3月31日</h2>\n                <h3>我们在我回乡前的最后一天相恋</h3>\n            </header>\n            <img src="//:0" data-src="' + IMAGE_PATH + '/slides/2.jpg" />\n        </section>\n        <section>\n            <header>\n                <h2>2013年10月26日</h2>\n                <h3>我们第一次踏上异国的旅行</h3>\n            </header>\n            <img src="//:0" data-src="' + IMAGE_PATH + '/slides/3.jpg" />\n        </section>\n        <section>\n            <header>\n                <h2>2014年4月12日</h2>\n                <h3>我们一起收获永世不变的爱情</h3>\n            </header>\n            <img src="//:0" data-src="' + IMAGE_PATH + '/slides/4.jpg" />\n        </section>\n        <section>\n            <header>\n                <h2>2015年9月9日</h2>\n                <h3>让世界见证</h3>\n            </header>\n            <img src="//:0" data-src="' + IMAGE_PATH + '/slides/5.jpg" />\n        </section>\n    </div>\n';
 	var $slides;
+	
+	var FORM_HTML = '\n    <div id="form-wrap">\n        <div class="form">\n            <div class="phone"><label>您的手机：</label><input></div>\n            <div class="name"><label>您的姓名：</label><input></div>\n            <div class="content"><label>您的祝福：</label><input></div>\n            <div class="btn"><a>发送祝福/参加喜宴</a></div>\n        </div>\n    </div>\n';
+	var $form;
 	
 	function lazyload(el) {
 	    var _context;
@@ -506,15 +502,42 @@
 	    }, null, this);
 	}
 	
-	function showInvitation() {
+	function hideWedding() {
 	    var _context9;
+	
+	    var $wedding, rect;
+	    return regeneratorRuntime.async(function hideWedding$(context$1$0) {
+	        while (1) switch (context$1$0.prev = context$1$0.next) {
+	            case 0:
+	                $wedding = (_context9 = $cover, _util.find).call(_context9, '.wedding');
+	                rect = $wedding.getBoundingClientRect();
+	
+	                $wedding.style.webkitTransition = $wedding.style.transition = 'opacity 0.6s ease 0s';
+	                $wedding.style.opacity = '0';
+	
+	                context$1$0.next = 6;
+	                return regeneratorRuntime.awrap(delay(600));
+	
+	            case 6:
+	
+	                $wedding.style.display = 'none';
+	
+	            case 7:
+	            case 'end':
+	                return context$1$0.stop();
+	        }
+	    }, null, this);
+	}
+	
+	function showInvitation() {
+	    var _context10;
 	
 	    var $invitation, $wedding, weddingRect;
 	    return regeneratorRuntime.async(function showInvitation$(context$1$0) {
 	        while (1) switch (context$1$0.prev = context$1$0.next) {
 	            case 0:
-	                $invitation = (_context9 = $cover, _util.find).call(_context9, '.invitation');
-	                $wedding = (_context9 = $cover, _util.find).call(_context9, '.wedding');
+	                $invitation = (_context10 = $cover, _util.find).call(_context10, '.invitation');
+	                $wedding = (_context10 = $cover, _util.find).call(_context10, '.wedding');
 	                weddingRect = $wedding.getBoundingClientRect();
 	
 	                $invitation.style.display = 'block';
@@ -538,8 +561,91 @@
 	    }, null, this);
 	}
 	
+	function showButtons() {
+	    var _context11;
+	
+	    var $buttons;
+	    return regeneratorRuntime.async(function showButtons$(context$1$0) {
+	        while (1) switch (context$1$0.prev = context$1$0.next) {
+	            case 0:
+	                $buttons = (_context11 = $cover, _util.find).call(_context11, '.buttons');
+	
+	                $buttons.style.display = 'block';
+	
+	                context$1$0.next = 4;
+	                return regeneratorRuntime.awrap(delay(100));
+	
+	            case 4:
+	
+	                $buttons.style.webkitTransition = $buttons.style.transition = 'all 0.6s ease-in 0s';
+	                $buttons.style.opacity = 1;
+	
+	                context$1$0.next = 8;
+	                return regeneratorRuntime.awrap(delay(600));
+	
+	            case 8:
+	            case 'end':
+	                return context$1$0.stop();
+	        }
+	    }, null, this);
+	}
+	
+	function showForm(type) {
+	    var _context12;
+	
+	    var $btn, phone, name, content, _context13, script;
+	
+	    return regeneratorRuntime.async(function showForm$(context$1$0) {
+	        while (1) switch (context$1$0.prev = context$1$0.next) {
+	            case 0:
+	                context$1$0.next = 2;
+	                return regeneratorRuntime.awrap(delay(300));
+	
+	            case 2:
+	
+	                $form.style.display = '-webkit-box';
+	
+	                $btn = (_context12 = $form, _util.find).call(_context12, '.form a');
+	
+	                $btn.innerText = type === 'invited' ? '参加喜宴' : '发送祝福';
+	
+	            case 5:
+	                if (!(!phone || !name || !content)) {
+	                    context$1$0.next = 13;
+	                    break;
+	                }
+	
+	                context$1$0.next = 8;
+	                return regeneratorRuntime.awrap(waitForEvent($btn, 'tap'));
+	
+	            case 8:
+	                phone = (_context13 = $form, _util.find).call(_context13, '.phone input').value;
+	                name = (_context13 = $form, _util.find).call(_context13, '.name input').value;
+	                content = (_context13 = $form, _util.find).call(_context13, '.content input').value;
+	                context$1$0.next = 5;
+	                break;
+	
+	            case 13:
+	                context$1$0.next = 15;
+	                return regeneratorRuntime.awrap(delay(300));
+	
+	            case 15:
+	                script = doc.createElement('script');
+	
+	                script.src = 'http://' + location.hostname + ':8181/api/write?type=' + type + '&phone=' + phone + '&name=' + name + '&content=' + content;
+	                doc.body.appendChild(script);
+	
+	                $form.style.display = 'none';
+	
+	            case 19:
+	            case 'end':
+	                return context$1$0.stop();
+	        }
+	    }, null, this);
+	}
+	
 	(function callee$0$0() {
-	    var _context10;
+	    var _context14;
 	
 	    return regeneratorRuntime.async(function callee$0$0$(context$1$0) {
 	        while (1) switch (context$1$0.prev = context$1$0.next) {
@@ -549,7 +655,7 @@
 	
 	            case 2:
 	
-	                $logo = (_context10 = (_context10 = (_context10 = _util.wrap.call(LOGO_HTML), _util.find).call(_context10, '#logo-wrap'), _util.appendTo).call(_context10, doc.body), _util.center).call(_context10);
+	                $logo = (_context14 = (_context14 = (_context14 = _util.wrap.call(LOGO_HTML), _util.find).call(_context14, '#logo-wrap'), _util.appendTo).call(_context14, doc.body), _util.center).call(_context14);
 	
 	                context$1$0.next = 5;
 	                return regeneratorRuntime.awrap(loading());
@@ -560,7 +666,7 @@
 	
 	            case 7:
 	
-	                $cover = (_context10 = (_context10 = _util.wrap.call(COVER_HTML), _util.find).call(_context10, '#cover-wrap'), _util.appendTo).call(_context10, doc.body);
+	                $cover = (_context14 = (_context14 = _util.wrap.call(COVER_HTML), _util.find).call(_context14, '#cover-wrap'), _util.appendTo).call(_context14, doc.body);
 	
 	                context$1$0.next = 10;
 	                return regeneratorRuntime.awrap(lazyload($cover));
@@ -591,7 +697,7 @@
 	
 	            case 22:
 	
-	                $indicator = (_context10 = (_context10 = _util.wrap.call(INDICATOR_HTML), _util.find).call(_context10, '#indicator-wrap'), _util.appendTo).call(_context10, doc.body);
+	                $indicator = (_context14 = (_context14 = _util.wrap.call(INDICATOR_HTML), _util.find).call(_context14, '#indicator-wrap'), _util.appendTo).call(_context14, doc.body);
 	
 	                context$1$0.next = 25;
 	                return regeneratorRuntime.awrap(showIndicator());
@@ -610,7 +716,7 @@
 	
 	            case 31:
 	
-	                $slides = (_context10 = (_context10 = _util.wrap.call(SLIDES_HTML), _util.find).call(_context10, '#slide-wrap'), _util.appendTo).call(_context10, doc.body);
+	                $slides = (_context14 = (_context14 = _util.wrap.call(SLIDES_HTML), _util.find).call(_context14, '#slide-wrap'), _util.appendTo).call(_context14, doc.body);
 	
 	                context$1$0.next = 34;
 	                return regeneratorRuntime.awrap(lazyload($slides));
@@ -640,6 +746,29 @@
 	                return regeneratorRuntime.awrap(showInvitation());
 	
 	            case 46:
+	                context$1$0.next = 48;
+	                return regeneratorRuntime.awrap(delay(1000));
+	
+	            case 48:
+	                context$1$0.next = 50;
+	                return regeneratorRuntime.awrap(hideWedding());
+	
+	            case 50:
+	                context$1$0.next = 52;
+	                return regeneratorRuntime.awrap(showButtons());
+	
+	            case 52:
+	
+	                $form = (_context14 = (_context14 = _util.wrap.call(FORM_HTML), _util.find).call(_context14, '#form-wrap'), _util.appendTo).call(_context14, doc.body);
+	
+	                (_context14 = (_context14 = $cover, _util.findAll).call(_context14, '.buttons a'), _util.each).call(_context14, function (btn) {
+	                    btn.addEventListener('tap', function (e) {
+	                        var id = btn.getAttribute('id');
+	                        showForm(id);
+	                    }, false);
+	                });
+	
+	            case 54:
 	            case 'end':
 	                return context$1$0.stop();
 	        }
@@ -676,7 +805,7 @@
 /* 2 */
 /***/ function(module, exports) {
 
-	module.exports = "html,\nbody {\n  margin: 0;\n  padding: 0;\n  width: 100%;\n  height: 100%;\n  overflow: hidden;\n  background-color: #FFF;\n  font-family: 'Heiti SC', 'Microsoft YaHei', '微软雅黑', sans-serif;\n}\n#logo-wrap {\n  width: 2rem;\n  height: 2rem;\n  overflow: hidden;\n  position: absolute;\n  z-index: 999;\n}\n#logo-wrap .bg {\n  width: 100%;\n  height: 100%;\n  background-color: #eb2f35;\n  position: absolute;\n  -webkit-transform: translateY(100%);\n  transform: translateY(100%);\n}\n#logo-wrap img {\n  width: 100%;\n  height: 100%;\n  position: absolute;\n  left: 0;\n  top: 0;\n}\n#cover-wrap {\n  opacity: 0;\n  width: 100%;\n  height: 100%;\n  overflow: hidden;\n  position: absolute;\n  left: 0;\n  top: 0;\n  z-index: 1;\n  background-color: #b01417;\n}\n#cover-wrap .paper {\n  opacity: 0;\n  width: 100%;\n  height: 17.75rem;\n  position: absolute;\n  overflow: hidden;\n  left: 0;\n  top: 0;\n  z-index: 9;\n  background-color: #f7e687;\n  -webkit-transform: translateY(-50%);\n  transform: translateY(-50%);\n  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.7);\n}\n#cover-wrap .paper .title {\n  width: 9.296875rem;\n  height: 1.234375rem;\n  margin: 1rem auto 0;\n}\n#cover-wrap .paper .title img {\n  width: 100%;\n  height: 100%;\n  margin-left: 0.25rem;\n}\n#cover-wrap .imgs {\n  width: 100%;\n  height: 100%;\n  position: absolute;\n  left: 0;\n  top: 0;\n  -webkit-transform: translateY(0);\n  transform: translateY(0);\n  z-index: 10;\n}\n#cover-wrap .imgs img {\n  width: 100%;\n  position: absolute;\n  left: 0;\n  top: 0;\n  z-index: 99;\n}\n#cover-wrap .imgs .heart,\n#cover-wrap .imgs .heart-out {\n  opacity: 0;\n}\n#cover-wrap .wedding {\n  width: 100%;\n  position: absolute;\n  left: 0;\n  top: 0;\n  opacity: 0;\n  display: none;\n  -webkit-transform: translateY(30%);\n  transform: translateY(30%);\n  z-index: 99;\n}\n#cover-wrap .invitation {\n  width: 100%;\n  position: absolute;\n  box-sizing: border-box;\n  padding: 0.3125rem;\n  display: none;\n  z-index: 99;\n  opacity: 0;\n}\n#cover-wrap .invitation > * {\n  color: #4c4c4c;\n  text-align: center;\n  padding: 0.3125rem;\n  line-height: 1.5em;\n}\n#cover-wrap .invitation .time,\n#cover-wrap .invitation .name {\n  font-size: 0.625rem;\n}\n#cover-wrap .invitation .text {\n  font-size: 0.5rem;\n}\n#cover-wrap .invitation .form {\n  font-size: 0.46875rem;\n}\n#cover-wrap .invitation .form label {\n  font-weight: bolder;\n}\n#indicator-wrap {\n  width: 100%;\n  height: 100%;\n  overflow: hidden;\n  position: absolute;\n  left: 0;\n  top: 0;\n  z-index: 999;\n}\n#indicator-wrap .text {\n  opacity: 0;\n  position: absolute;\n  left: 0;\n  bottom: 0;\n  text-align: center;\n  width: 100%;\n  padding: 0.9375rem 0;\n  font-size: 0.46875rem;\n  color: #FFFFFF;\n  background: url(assets/images/arrow.png) no-repeat center 1.5625rem;\n  background-size: 1.328125rem 0.53125rem;\n  -webkit-animation: indicator-beat 1s linear 0s infinite alternate;\n  animation: indicator-beat 1s linear 0s infinite alternate;\n}\n@-webkit-keyframes indicator-beat {\n  0% {\n    opacity: 0;\n  }\n  100% {\n    opacity: 1;\n  }\n}\n@keyframes indicator-beat {\n  0% {\n    opacity: 0;\n  }\n  100% {\n    opacity: 1;\n  }\n}\n#slide-wrap {\n  display: none;\n  width: 100%;\n  height: 100%;\n  position: absolute;\n  left: 0;\n  top: 0;\n  z-index: 99;\n  overflow: hidden;\n}\n#slide-wrap section {\n  display: none;\n  width: 100%;\n  height: 100%;\n  position: absolute;\n  left: 0;\n  top: 0;\n  overflow: hidden;\n}\n#slide-wrap header {\n  margin: 0.3125rem 0.625rem;\n}\n#slide-wrap header h2,\n#slide-wrap header h3 {\n  margin: 0;\n  padding: 0.3125rem;\n  color: #eb2f35;\n  text-align: left;\n}\n#slide-wrap header h2 span,\n#slide-wrap header h3 span {\n  display: inline-block;\n  opacity: 0;\n  -webkit-transform: scale(1.2);\n  transform: scale(1.2);\n}\n#slide-wrap header h2 {\n  font-size: 0.46875rem;\n}\n#slide-wrap header h3 {\n  font-size: 0.5625rem;\n}\n#slide-wrap img {\n  opacity: 0;\n  width: 100%;\n}\n"
+	module.exports = "html,\nbody {\n  margin: 0;\n  padding: 0;\n  width: 100%;\n  height: 100%;\n  overflow: hidden;\n  background-color: #FFF;\n  font-family: 'Heiti SC', 'Microsoft YaHei', '微软雅黑', sans-serif;\n}\n#logo-wrap {\n  width: 2rem;\n  height: 2rem;\n  overflow: hidden;\n  position: absolute;\n  z-index: 999;\n}\n#logo-wrap .bg {\n  width: 100%;\n  height: 100%;\n  background-color: #eb2f35;\n  position: absolute;\n  -webkit-transform: translateY(100%);\n  transform: translateY(100%);\n}\n#logo-wrap img {\n  width: 100%;\n  height: 100%;\n  position: absolute;\n  left: 0;\n  top: 0;\n}\n#cover-wrap {\n  opacity: 0;\n  width: 100%;\n  height: 100%;\n  overflow: hidden;\n  position: absolute;\n  left: 0;\n  top: 0;\n  z-index: 1;\n  background-color: #b01417;\n}\n#cover-wrap .paper {\n  opacity: 0;\n  width: 100%;\n  height: 17.75rem;\n  position: absolute;\n  overflow: hidden;\n  left: 0;\n  top: 0;\n  z-index: 9;\n  background-color: #f7e687;\n  -webkit-transform: translateY(-50%);\n  transform: translateY(-50%);\n  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.7);\n}\n#cover-wrap .paper .title {\n  width: 9.296875rem;\n  height: 1.234375rem;\n  margin: 1rem auto 0;\n}\n#cover-wrap .paper .title img {\n  width: 100%;\n  height: 100%;\n  margin-left: 0.25rem;\n}\n#cover-wrap .imgs {\n  width: 100%;\n  height: 100%;\n  position: absolute;\n  left: 0;\n  top: 0;\n  -webkit-transform: translateY(0);\n  transform: translateY(0);\n  z-index: 10;\n}\n#cover-wrap .imgs img {\n  width: 100%;\n  position: absolute;\n  left: 0;\n  top: 0;\n  z-index: 99;\n}\n#cover-wrap .imgs .heart,\n#cover-wrap .imgs .heart-out {\n  opacity: 0;\n}\n#cover-wrap .wedding {\n  width: 100%;\n  position: absolute;\n  left: 0;\n  top: 0;\n  opacity: 0;\n  display: none;\n  -webkit-transform: translateY(30%);\n  transform: translateY(30%);\n  z-index: 99;\n}\n#cover-wrap .invitation {\n  width: 100%;\n  position: absolute;\n  box-sizing: border-box;\n  padding: 0.3125rem;\n  display: none;\n  z-index: 99;\n  opacity: 0;\n}\n#cover-wrap .invitation > * {\n  color: #4c4c4c;\n  text-align: center;\n  padding: 0.3125rem;\n  line-height: 1.5em;\n}\n#cover-wrap .invitation .time,\n#cover-wrap .invitation .name {\n  font-size: 0.625rem;\n}\n#cover-wrap .invitation .text {\n  font-size: 0.5rem;\n}\n#cover-wrap .invitation .form {\n  font-size: 0.46875rem;\n}\n#cover-wrap .invitation .form label {\n  font-weight: bolder;\n}\n#cover-wrap .buttons {\n  display: none;\n  opacity: 0;\n  width: 100%;\n  position: absolute;\n  padding: 0.625rem 0;\n  z-index: 99;\n  text-align: center;\n}\n#cover-wrap .buttons a {\n  display: inline-block;\n  width: 7.5rem;\n  padding: 0.3125rem 0;\n  margin: 0.3125rem;\n  font-size: 0.625rem;\n  background-color: #eb2f35;\n  border-radius: 0.09375rem;\n  color: #FFF;\n  text-align: center;\n}\n#indicator-wrap {\n  width: 100%;\n  height: 100%;\n  overflow: hidden;\n  position: absolute;\n  left: 0;\n  top: 0;\n  z-index: 999;\n}\n#indicator-wrap .text {\n  opacity: 0;\n  position: absolute;\n  left: 0;\n  bottom: 0;\n  text-align: center;\n  width: 100%;\n  padding: 0.9375rem 0;\n  font-size: 0.46875rem;\n  color: #FFFFFF;\n  background: url(assets/images/arrow.png) no-repeat center 1.5625rem;\n  background-size: 1.328125rem 0.53125rem;\n  -webkit-animation: indicator-beat 1s linear 0s infinite alternate;\n  animation: indicator-beat 1s linear 0s infinite alternate;\n}\n#form-wrap {\n  display: none;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.6);\n  -webkit-box-pack: center;\n  -webkit-box-align: center;\n  position: absolute;\n  z-index: 999;\n}\n#form-wrap .form {\n  box-sizing: border-box;\n  width: 100%;\n  padding: 0.625rem 0.46875rem;\n  background-color: #eb2f35;\n}\n#form-wrap .form div {\n  padding: 0.3125rem 0;\n  display: -webkit-box;\n  -webkit-box-align: center;\n}\n#form-wrap .form div label {\n  display: block;\n  width: 2.34375rem;\n  text-align: right;\n  height: 0.9375rem;\n  line-height: 0.9375rem;\n  color: #FFF;\n  font-size: 0.46875rem;\n  font-weight: bold;\n}\n#form-wrap .form div input {\n  display: block;\n  -webkit-box-flex: 1;\n  margin-left: 0.3125rem;\n  height: 0.9375rem;\n  line-height: 0.9375rem;\n  box-sizing: border-box;\n  padding: 0.15625rem;\n  font-size: 0.46875rem;\n  background-color: rgba(255, 255, 255, 0.9);\n  color: #444;\n}\n#form-wrap .form div.btn {\n  display: inline-block;\n  width: 100%;\n  height: 100%;\n  background-color: #FFF;\n  border-radius: 0.09375rem;\n  color: #444;\n  text-align: center;\n  font-size: 0.625rem;\n}\n@-webkit-keyframes indicator-beat {\n  0% {\n    opacity: 0;\n  }\n  100% {\n    opacity: 1;\n  }\n}\n@keyframes indicator-beat {\n  0% {\n    opacity: 0;\n  }\n  100% {\n    opacity: 1;\n  }\n}\n#slide-wrap {\n  display: none;\n  width: 100%;\n  height: 100%;\n  position: absolute;\n  left: 0;\n  top: 0;\n  z-index: 99;\n  overflow: hidden;\n}\n#slide-wrap section {\n  display: none;\n  width: 100%;\n  height: 100%;\n  position: absolute;\n  left: 0;\n  top: 0;\n  overflow: hidden;\n}\n#slide-wrap header {\n  margin: 0.3125rem 0.625rem;\n}\n#slide-wrap header h2,\n#slide-wrap header h3 {\n  margin: 0;\n  padding: 0.3125rem;\n  color: #eb2f35;\n  text-align: left;\n}\n#slide-wrap header h2 span,\n#slide-wrap header h3 span {\n  display: inline-block;\n  opacity: 0;\n  -webkit-transform: scale(1.2);\n  transform: scale(1.2);\n}\n#slide-wrap header h2 {\n  font-size: 0.46875rem;\n}\n#slide-wrap header h3 {\n  font-size: 0.5625rem;\n}\n#slide-wrap img {\n  opacity: 0;\n  width: 100%;\n}\n"
 
 /***/ },
 /* 3 */

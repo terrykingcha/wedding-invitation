@@ -10,7 +10,7 @@ import {
 const win = window;
 const doc = win.document;
 const {defer} = promise.features;
-const {domReady, delay} = promise.utilities;
+const {domReady, delay, waitForEvent} = promise.utilities;
 
 doc.addEventListener('touchmove', e => e.preventDefault());
 
@@ -43,6 +43,7 @@ const imageloaderPromises = Object.keys(images)
     });
 
 const MUSIC_PATH = 'assets/musics';
+/*
 const musicPromise = new Promise(function(resolve, reject) {
     var music = new Audio(`${MUSIC_PATH}/bg.mp3`);
     music.addEventListener('loadstart', (...args) => console.log('music loadstart'))
@@ -64,6 +65,7 @@ const musicPromise = new Promise(function(resolve, reject) {
     music.preload = 'auto';
     music.play();
 });
+*/
 
 Promise.all(imageloaderPromises)
     .then(preloaderDeferred.resolve);
@@ -96,6 +98,10 @@ const COVER_HTML = `
             <div class="form"><label>地点：</label><span>浙江省绍兴市越城区偏门直街179号<span></div>
             <div class="form"><label>酒店：</label><span>香港品珍楼精品食府<span></div>
             <div class="form"><label>时间：</label><span>下午六点整（五点开始签到）<span></div>
+        </div>
+        <div class="buttons">
+            <a id="invited">应邀赴宴</a>
+            <a id="bless">送上祝福</a>
         </div>
     </div>
 `;
@@ -148,6 +154,18 @@ const SLIDES_HTML = `
     </div>
 `;
 var $slides;
+
+const FORM_HTML = `
+    <div id="form-wrap">
+        <div class="form">
+            <div class="phone"><label>您的手机：</label><input></div>
+            <div class="name"><label>您的姓名：</label><input></div>
+            <div class="content"><label>您的祝福：</label><input></div>
+            <div class="btn"><a>发送祝福/参加喜宴</a></div>
+        </div>
+    </div>
+`;
+var $form;
 
 function lazyload(el) {
     el::findAll('img[data-src]')::
@@ -436,6 +454,19 @@ async function showWedding() {
     await delay(1000);
 }
 
+async function hideWedding() {
+    var $wedding = $cover::find('.wedding');
+    var rect = $wedding.getBoundingClientRect();
+
+    $wedding.style.webkitTransition = 
+        $wedding.style.transition = `opacity 0.6s ease 0s`;
+    $wedding.style.opacity = '0';
+
+    await delay(600); 
+
+    $wedding.style.display = 'none';
+}
+
 async function showInvitation() {
     var $invitation = $cover::find('.invitation');
     var $wedding = $cover::find('.wedding');
@@ -451,6 +482,46 @@ async function showInvitation() {
     $invitation.style.opacity = 1;
 
     await delay(600);
+}
+
+async function showButtons() {
+    var $buttons = $cover::find('.buttons');
+
+    $buttons.style.display = 'block';
+
+    await delay(100);
+
+    $buttons.style.webkitTransition = 
+        $buttons.style.transition = `all 0.6s ease-in 0s`;
+    $buttons.style.opacity = 1;
+
+    await delay(600);
+}
+
+async function showForm(type) {
+    await delay(300);
+
+    $form.style.display = '-webkit-box';
+
+    var $btn = $form::find('.form a')
+    $btn.innerText = type === 'invited' ? '参加喜宴' : '发送祝福';
+
+    var phone, name, content;
+
+    while (!phone || !name || !content) {
+        await waitForEvent($btn, 'tap');
+        phone = $form::find('.phone input').value;
+        name = $form::find('.name input').value;
+        content = $form::find('.content input').value;
+    }
+
+    await delay(300);
+
+    var script = doc.createElement('script');
+    script.src = `http://${location.hostname}:8181/api/write?type=${type}&phone=${phone}&name=${name}&content=${content}`;
+    doc.body.appendChild(script);
+
+    $form.style.display = 'none';
 }
 
 async () => {
@@ -498,6 +569,21 @@ async () => {
     await showWedding();
     await delay(500);
     await showInvitation();
+    await delay(1000);
+    await hideWedding();
+    await showButtons();
+
+    $form = FORM_HTML::wrap()
+            ::find('#form-wrap')
+            ::appendTo(doc.body);
+
+    $cover::findAll('.buttons a')
+        ::each(function(btn) {
+            btn.addEventListener('tap', function(e) {
+                var id = btn.getAttribute('id');
+                showForm(id);
+            }, false);
+        })
 }();
 
 

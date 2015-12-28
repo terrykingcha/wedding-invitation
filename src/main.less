@@ -138,6 +138,28 @@ html, body {
             }
         }
     }
+
+    .buttons {
+        display: none;
+        opacity: 0;
+        width: 100%;
+        position: absolute;
+        padding: 40 / 64rem 0;
+        z-index: 99;
+        text-align: center;
+
+        a {
+            display: inline-block;
+            width: 480 / 64rem;
+            padding: 20 / 64rem 0;
+            margin: 20 / 64rem;
+            font-size: 40 / 64rem;
+            background-color: #eb2f35;
+            border-radius: 6 / 64rem;
+            color: #FFF;
+            text-align: center;
+        }
+    }
 }
 
 #indicator-wrap {
@@ -163,6 +185,66 @@ html, body {
         background-size: 85 / 64rem 34 / 64rem;
         -webkit-animation: indicator-beat 1s linear 0s infinite alternate;
         animation: indicator-beat 1s linear 0s infinite alternate;
+    }
+}
+
+#form-wrap {
+    display: none;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.6);
+    -webkit-box-pack: center;
+    -webkit-box-align: center;
+    position: absolute;
+    z-index: 999;
+
+    .form {
+        box-sizing: border-box;
+        width: 100%;
+        padding: 40 / 64rem 30 / 64rem;
+        background-color: #eb2f35;
+
+        div {
+            padding: 20 / 64rem 0;
+            display: -webkit-box;
+            -webkit-box-align: center;
+
+            label {
+                display: block;
+                width: 150 / 64rem;
+                text-align: right;
+                height: 60 / 64rem;
+                line-height: 60 / 64rem;
+                color: #FFF;
+                font-size: 30 / 64rem;
+                font-weight: bold;
+            }
+
+            input {
+                display: block;
+                -webkit-box-flex: 1;
+                margin-left: 20 / 64rem;
+                height: 60 / 64rem;
+                line-height: 60 / 64rem;
+                box-sizing: border-box;
+                padding: 10 / 64rem;
+                font-size: 30 / 64rem;
+                background-color: rgba(255,255,255,0.9);
+                color: #444;
+            }
+
+            &.btn {
+                display: inline-block;
+                width: 100%;
+                height: 100%;
+                background-color: #FFF;
+                border-radius: 6 / 64rem;
+                color: #444;
+                text-align: center;
+                font-size: 40 / 64rem;
+            }
+        }
     }
 }
 
