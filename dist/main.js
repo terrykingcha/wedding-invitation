@@ -49,17 +49,15 @@
 	var _images,
 	    _this = this;
 	
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
-	
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 	
 	__webpack_require__(1);
 	
 	__webpack_require__(4);
 	
-	var _lib = __webpack_require__(196);
+	var _lib = __webpack_require__(191);
 	
-	var _util = __webpack_require__(197);
+	var _util = __webpack_require__(192);
 	
 	var win = window;
 	var doc = win.document;
@@ -67,6 +65,10 @@
 	var _promise$utilities = _lib.promise.utilities;
 	var domReady = _promise$utilities.domReady;
 	var delay = _promise$utilities.delay;
+	
+	doc.addEventListener('touchmove', function (e) {
+	    return e.preventDefault();
+	});
 	
 	var preloaderDeferred = defer();
 	
@@ -101,7 +103,6 @@
 	        console.log('music progress');
 	        progressCount++;
 	        if (progressCount > 20) {
-	            music.play();
 	            resolve();
 	        }
 	    });
@@ -113,11 +114,12 @@
 	    });
 	    music.loop = true;
 	    music.autobuffer = true;
-	    music.preload = 'auto';
 	    music.autoplay = true;
+	    music.preload = 'auto';
+	    music.play();
 	});
 	
-	Promise.all([musicPromise].concat(_toConsumableArray(imageloaderPromises))).then(preloaderDeferred.resolve);
+	Promise.all(imageloaderPromises).then(preloaderDeferred.resolve);
 	
 	var LOGO_HTML = '\n    <div id="logo-wrap">\n        <div class="bg"></div>\n        <img src="' + IMAGE_PATH + '/logo.png" />\n    </div>\n';
 	var $logo;
@@ -5996,12 +5998,7 @@
 
 
 /***/ },
-/* 191 */,
-/* 192 */,
-/* 193 */,
-/* 194 */,
-/* 195 */,
-/* 196 */
+/* 191 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -6013,7 +6010,7 @@
 	module.exports = exports["default"];
 
 /***/ },
-/* 197 */
+/* 192 */
 /***/ function(module, exports) {
 
 	'use strict';

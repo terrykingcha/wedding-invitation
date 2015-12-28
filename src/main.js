@@ -12,6 +12,8 @@ const doc = win.document;
 const {defer} = promise.features;
 const {domReady, delay} = promise.utilities;
 
+doc.addEventListener('touchmove', e => e.preventDefault());
+
 const preloaderDeferred = defer();
 
 const IMAGE_PATH = 'assets/images';
@@ -51,7 +53,6 @@ const musicPromise = new Promise(function(resolve, reject) {
         console.log('music progress');
         progressCount++;
         if (progressCount > 20) {
-            music.play();
             resolve();
         }
     });
@@ -59,11 +60,12 @@ const musicPromise = new Promise(function(resolve, reject) {
     music.addEventListener('load', (...args) => console.log('music load'))
     music.loop = true;
     music.autobuffer = true;
-    music.preload = 'auto';
     music.autoplay = true;
+    music.preload = 'auto';
+    music.play();
 });
 
-Promise.all([musicPromise, ...imageloaderPromises])
+Promise.all(imageloaderPromises)
     .then(preloaderDeferred.resolve);
 
 const LOGO_HTML = `
