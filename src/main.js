@@ -1,8 +1,5 @@
 import './main.less';
-import 'regenerator/runtime';
-import Preloader from 'preload.io';
-import ImageLoader from 'preload.io-image';
-import {EVENTS} from 'preload.io';
+import 'babel-core/lib/polyfill';
 import {promise} from './lib';
 import {
     wrap, find, findAll, 
@@ -15,9 +12,9 @@ const doc = win.document;
 const {defer} = promise.features;
 const {domReady, delay} = promise.utilities;
 
-const IMAGE_PATH = 'assets/images';
-const preloader = new Preloader();
 const preloaderDeferred = defer();
+
+const IMAGE_PATH = 'assets/images';
 const images = {
     [`${IMAGE_PATH}/title.png`]: 0,
     [`${IMAGE_PATH}/cover.png`]: 0,
@@ -30,54 +27,44 @@ const images = {
     [`${IMAGE_PATH}/slides/4.jpg`]: 0,
     [`${IMAGE_PATH}/slides/5.jpg`]: 0
 };
-preloader.register(new ImageLoader({
-    blob: true
-}));
-for (let path in images) {
-    images[path] = preloader.load(path);
-}
-preloader.on(EVENTS.LOAD, event => {
-    console.log('image load');
-
-    var path;
-    for (let p in images) {
-        if (event.id === images[p]) {
-            path = p;
-            break;
-        }
-    }
-
-    var image = new Image();
-    let urlCreator = window.URL || window.webkitURL;
-    let imageURL = urlCreator.createObjectURL(event.res)
-    image.src = imageURL;
-    images[path] = image;
-})
-preloader.on(EVENTS.COMPLETE, event => {
-    console.log('image complete');
-    preloaderDeferred.resolve(images);
-});
+const imageloaderPromises = Object.keys(images)
+    .map(function(path) {
+        return new Promise(function(resolve, reject) {
+            var img = new Image();
+            img.onload = function() {
+                console.log('image load');
+                images[path] = img;
+                resolve();
+            }
+            img.src = path;
+        });
+    });
 
 const MUSIC_PATH = 'assets/musics';
-const music = new Audio(`${MUSIC_PATH}/bg.mp3`);
-const musicDeferred = defer();
-music.addEventListener('loadstart', (...args) => console.log('music loadstart'))
-music.addEventListener('loadeddata', (...args) => console.log('music loadeddata'))
-music.addEventListener('loadedmetadata', (...args) => console.log('music loadedmetadata'));
-var progressCount = 0;
-music.addEventListener('progress', (...args) => {
-    console.log('music progress');
-    progressCount++;
-    if (progressCount > 20) {
-        music.play();
-        musicDeferred.resolve();
-    }
+const musicPromise = new Promise(function(resolve, reject) {
+    var music = new Audio(`${MUSIC_PATH}/bg.mp3`);
+    music.addEventListener('loadstart', (...args) => console.log('music loadstart'))
+    music.addEventListener('loadeddata', (...args) => console.log('music loadeddata'))
+    music.addEventListener('loadedmetadata', (...args) => console.log('music loadedmetadata'));
+    var progressCount = 0;
+    music.addEventListener('progress', (...args) => {
+        console.log('music progress');
+        progressCount++;
+        if (progressCount > 20) {
+            music.play();
+            resolve();
+        }
+    });
+    music.addEventListener('loadend', (...args) => console.log('music loadend'))
+    music.addEventListener('load', (...args) => console.log('music load'))
+    music.loop = true;
+    music.autobuffer = true;
+    music.preload = 'auto';
+    music.autoplay = true;
 });
-music.addEventListener('loadend', (...args) => console.log('music loadend'))
-music.addEventListener('load', (...args) => console.log('music load'))
-music.loop = true;
-music.autobuffer = true;
-music.preload = 'auto';
+
+Promise.all([musicPromise, ...imageloaderPromises])
+    .then(preloaderDeferred.resolve);
 
 const LOGO_HTML = `
     <div id="logo-wrap">
